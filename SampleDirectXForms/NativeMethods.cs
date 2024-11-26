@@ -12,7 +12,7 @@ internal class NativeMethods
     public const uint CS_HREDRAW = 2;
     public const uint CS_USEDEFAULT = 0x80000000;
     public const uint CS_VREDRAW = 1;
-    public const int CW_USEDEFAULT = -1;
+    public const int CW_USEDEFAULT = unchecked((int)0x80000000);
     public const uint IDC_ARROW = 32512;
     public const uint IDC_CROSS = 32515;
     public const uint WM_DESTROY = 2;

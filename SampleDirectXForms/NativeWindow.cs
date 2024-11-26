@@ -2,7 +2,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.InteropServices;
 
 public class NativeWindow
@@ -39,11 +38,12 @@ public class NativeWindow
         this.Handle = NativeMethods.CreateWindowEx(
             0,
             classAtom,
-            "Sample", NativeMethods.WS_OVERLAPPEDWINDOW,
-            0,
-            0,
-            800,
-            600,
+            "Sample",
+            NativeMethods.WS_OVERLAPPEDWINDOW,
+            NativeMethods.CW_USEDEFAULT,
+            NativeMethods.CW_USEDEFAULT,
+            NativeMethods.CW_USEDEFAULT,
+            NativeMethods.CW_USEDEFAULT,
             IntPtr.Zero,
             IntPtr.Zero,
             wc.hInstance,
@@ -80,5 +80,4 @@ public class NativeWindow
 
         return NativeMethods.DefWindowProc(hWnd, msg, wParam, lParam);
     }
-
 }
