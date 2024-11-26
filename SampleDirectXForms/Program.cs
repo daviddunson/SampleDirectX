@@ -1,15 +1,14 @@
+namespace SampleDirectXForms;
+
 using System;
 
-namespace SampleDirectXForms
+internal static class Program
 {
-    internal static class Program
+    [STAThread]
+    private static void Main()
     {
-        [STAThread]
-        static void Main()
-        {
-            var window = new NativeWindow();
-            window.Create();
-            window.Run();
-        }
+        var window = new NativeWindow();
+        window.Create();
+        window.Run();
     }
 }
