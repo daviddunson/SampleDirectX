@@ -64,7 +64,7 @@ int D3DApp::Run()
                 UpdateScene(mTimer.DeltaTime());
                 DrawScene();
 
-                Sleep(1);
+                Sleep(0);
             }
             else
             {

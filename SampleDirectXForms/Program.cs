@@ -1,14 +1,15 @@
 namespace SampleDirectXForms;
 
 using System;
+using System.Runtime.InteropServices;
 
 internal static class Program
 {
     [STAThread]
     private static void Main()
     {
-        var window = new NativeWindow();
-        window.Create();
-        window.Run();
+        var app = new D3DApp(Marshal.GetHINSTANCE(typeof(Program).Module));
+        app.Init();
+        app.Run();
     }
 }

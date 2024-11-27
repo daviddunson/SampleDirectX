@@ -2,11 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net90-windows</TargetFramework>
 	<UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
 	<Nullable>disable</Nullable>
 	<ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vortice.Direct3D11" Version="3.6.2" />
+  </ItemGroup>
 
 </Project>
