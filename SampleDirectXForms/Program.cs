@@ -8,8 +8,10 @@ internal static class Program
     [STAThread]
     private static void Main()
     {
-        var app = new D3DApp(Marshal.GetHINSTANCE(typeof(Program).Module));
-        app.Init();
-        app.Run();
+        var instanceHandle = Marshal.GetHINSTANCE(typeof(Program).Module);
+        var game = new D3DGame(instanceHandle);
+        game.Init();
+
+        D3DApp.Run(game);
     }
 }

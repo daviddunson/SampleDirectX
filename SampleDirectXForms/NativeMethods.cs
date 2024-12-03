@@ -40,7 +40,7 @@ internal class NativeMethods
     public const uint WS_OVERLAPPEDWINDOW = 0xcf0000;
     public const uint WS_VISIBLE = 0x10000000;
 
-    public delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    public delegate nint WndProc(nint hWnd, uint msg, nint wParam, nint lParam);
 
     [Flags]
     public enum PeekMessageParams : uint
@@ -87,53 +87,70 @@ internal class NativeMethods
     }
 
     [DllImport("user32.dll", SetLastError = true, EntryPoint = "CreateWindowEx")]
-    public static extern IntPtr CreateWindowEx(
+    public static extern nint CreateWindowEx(
         int dwExStyle,
-        ushort classAtom,
-        //string lpClassName,
+        ushort lpClassName,
         string lpWindowName,
         uint dwStyle,
         int x,
         int y,
         int nWidth,
         int nHeight,
-        IntPtr hWndParent,
-        IntPtr hMenu,
-        IntPtr hInstance,
-        IntPtr lpParam);
+        nint hWndParent,
+        nint hMenu,
+        nint hInstance,
+        nint lpParam);
 
     [DllImport("user32.dll")]
-    public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+    public static extern nint DefWindowProc(nint hWnd, uint uMsg, nint wParam, nint lParam);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern bool DestroyWindow(IntPtr hWnd);
+    public static extern bool DestroyWindow(nint hWnd);
 
     [DllImport("user32.dll")]
-    public static extern IntPtr DispatchMessage([In] ref NativeMessage lpmsg);
+    public static extern nint DispatchMessage([In] ref NativeMessage lpmsg);
+
+    [DllImport("user32.dll")]
+    public static extern bool GetClientRect(nint hWnd, out RECT lpRect);
 
     [DllImport("kernel32.dll")]
     public static extern uint GetLastError();
 
     [DllImport("user32.dll")]
-    public static extern sbyte GetMessage(out NativeMessage lpMsg, IntPtr hWnd, uint wMsgFilterMin, uint wMsgFilterMax);
+    public static extern sbyte GetMessage(out NativeMessage lpMsg, nint hWnd, uint wMsgFilterMin, uint wMsgFilterMax);
 
     [DllImport("gdi32.dll")]
-    public static extern IntPtr GetStockObject(StockObjects fnObject);
+    public static extern nint GetStockObject(StockObjects fnObject);
 
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex);
+    public static extern nint GetWindowLongPtr(nint hWnd, int nIndex);
+
+    public static ushort HIWORD(nint value)
+    {
+        return (ushort)((value >> 16) & 0xFFFF);
+    }
 
     [DllImport("user32.dll")]
-    public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
+    public static extern nint LoadCursor(nint hInstance, int lpCursorName);
 
     [DllImport("user32.dll")]
-    public static extern IntPtr LoadIcon(IntPtr hInstance, IntPtr lpIconName);
+    public static extern nint LoadIcon(nint hInstance, nint lpIconName);
+
+    public static ushort LOWORD(nint value)
+    {
+        return (ushort)(value & 0xFFFF);
+    }
+
+    public static long MAKELRESULT(int low, int high)
+    {
+        return ((long)high << 16) | (uint)low;
+    }
 
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool PeekMessage(
         out NativeMessage lpMsg,
-        IntPtr hWnd,
+        nint hWnd,
         uint wMsgFilterMin,
         uint wMsgFilterMax,
         uint wRemoveMsg);
@@ -146,20 +163,20 @@ internal class NativeMethods
 
     // P/Invoke for SetWindowLongPtr
     [DllImport("user32.dll", SetLastError = true)]
-    public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+    public static extern nint SetWindowLongPtr(nint hWnd, int nIndex, nint dwNewLong);
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-    public static extern bool SetWindowText(IntPtr hwnd, string lpString);
+    public static extern bool SetWindowText(nint hwnd, string lpString);
 
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    public static extern bool ShowWindow(nint hWnd, int nCmdShow);
 
     [DllImport("user32.dll")]
     public static extern bool TranslateMessage([In] ref NativeMessage lpMsg);
 
     [DllImport("user32.dll")]
-    public static extern bool UpdateWindow(IntPtr hWnd);
+    public static extern bool UpdateWindow(nint hWnd);
 
     [StructLayout(LayoutKind.Sequential)]
     public struct MINMAXINFO
@@ -174,10 +191,10 @@ internal class NativeMethods
     [StructLayout(LayoutKind.Sequential)]
     public struct NativeMessage
     {
-        public IntPtr handle;
+        public nint handle;
         public uint msg;
-        public IntPtr wParam;
-        public IntPtr lParam;
+        public nint wParam;
+        public nint lParam;
         public uint time;
         public Point p;
     }
@@ -199,6 +216,15 @@ internal class NativeMethods
         }
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    public struct RECT
+    {
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
+    }
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct WNDCLASSEX
     {
@@ -208,15 +234,15 @@ internal class NativeMethods
         [MarshalAs(UnmanagedType.U4)]
         public int style;
 
-        public IntPtr lpfnWndProc;
+        public nint lpfnWndProc;
         public int cbClsExtra;
         public int cbWndExtra;
-        public IntPtr hInstance;
-        public IntPtr hIcon;
-        public IntPtr hCursor;
-        public IntPtr hbrBackground;
+        public nint hInstance;
+        public nint hIcon;
+        public nint hCursor;
+        public nint hbrBackground;
         public string lpszMenuName;
         public string lpszClassName;
-        public IntPtr hIconSm;
+        public nint hIconSm;
     }
 }

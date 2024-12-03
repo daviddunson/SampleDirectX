@@ -6,16 +6,16 @@ using System.Diagnostics;
 internal class GameTimer
 {
     private readonly double secondsPerTick = 1.0 / Stopwatch.Frequency;
+    private readonly Stopwatch stopwatch = Stopwatch.StartNew();
     private long baseTime;
     private long currentTime;
-    private double mDeltaTime;
+    private double deltaTime;
     private long pausedTime;
     private long previousTime;
     private bool stopped;
     private long stopTime;
-    private readonly Stopwatch stopwatch = Stopwatch.StartNew();
 
-    public float DeltaTime => (float)this.mDeltaTime;
+    public float DeltaTime => (float)this.deltaTime;
 
     public float GameTime
     {
@@ -68,14 +68,14 @@ internal class GameTimer
     {
         if (this.stopped)
         {
-            this.mDeltaTime = 0.0;
+            this.deltaTime = 0.0;
             return;
         }
 
         var currTime = this.stopwatch.ElapsedTicks;
 
         this.currentTime = currTime;
-        this.mDeltaTime = Math.Max((this.currentTime - this.previousTime) * this.secondsPerTick, 0.0);
+        this.deltaTime = Math.Max((this.currentTime - this.previousTime) * this.secondsPerTick, 0.0);
         this.previousTime = this.currentTime;
     }
 }
