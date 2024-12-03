@@ -9,7 +9,6 @@ internal class D3DWindow
 {
     private static readonly Dictionary<nint, D3DWindow> Instances = new();
     private readonly nint instanceHandle;
-
     private readonly WndProc wndProc = WndProc;
     ////private bool mMaximized;
     ////private bool mMinimized;
@@ -75,14 +74,9 @@ internal class D3DWindow
         }
 
         Instances[this.Handle] = this;
-        SetWindowLongPtr(this.Handle, GWLP_USERDATA, this.Handle);
 
         ShowWindow(this.Handle, 1);
         UpdateWindow(this.Handle);
-
-        GetClientRect(this.Handle, out var rect);
-        this.ClientWidth = rect.Right - rect.Left;
-        this.ClientHeight = rect.Bottom - rect.Top;
     }
 
     protected virtual nint MsgProc(nint hWnd, uint msg, nint wParam, nint lParam)
@@ -112,12 +106,16 @@ internal class D3DWindow
 
             case WM_EXITSIZEMOVE:
             {
-                GetClientRect(this.Handle, out var rect);
-                this.ClientWidth = rect.Right - rect.Left;
-                this.ClientHeight = rect.Bottom - rect.Top;
                 ////this.mResizing = false;
                 this.OnResize();
                 return 0;
+            }
+
+            case WM_SIZE:
+            {
+                this.ClientWidth = (int)(lParam & 0xFFFF);
+                this.ClientHeight = (int)((lParam >> 16) & 0xFFFF);
+                break;
             }
 
             case WM_GETMINMAXINFO:
@@ -185,9 +183,7 @@ internal class D3DWindow
 
     private static nint WndProc(nint hWnd, uint msg, nint wParam, nint lParam)
     {
-        var instanceHandle = GetWindowLongPtr(hWnd, GWLP_USERDATA);
-
-        return Instances.TryGetValue(instanceHandle, out var instance) ?
+        return Instances.TryGetValue(hWnd, out var instance) ?
             instance.MsgProc(hWnd, msg, wParam, lParam) :
             DefWindowProc(hWnd, msg, wParam, lParam);
     }

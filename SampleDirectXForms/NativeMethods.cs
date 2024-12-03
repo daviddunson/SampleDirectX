@@ -17,6 +17,11 @@ internal class NativeMethods
     public const uint IDC_ARROW = 32512;
     public const uint IDC_CROSS = 32515;
     public const int MNC_CLOSE = 0x0003;
+    public const uint SIZE_MAXHIDE = 4;
+    public const uint SIZE_MAXIMIZED = 2;
+    public const uint SIZE_MAXSHOW = 3;
+    public const uint SIZE_MINIMIZED = 1;
+    public const uint SIZE_RESTORED = 0;
     public const int WA_ACTIVE = 1;
     public const int WA_CLICKACTIVE = 2;
     public const int WA_INACTIVE = 0;
@@ -32,10 +37,12 @@ internal class NativeMethods
     public const uint WM_MBUTTONUP = 0x0208;
     public const uint WM_MENUCHAR = 0x120;
     public const uint WM_MOUSEMOVE = 0x0200;
+    public const uint WM_MOVE = 0x0003;
     public const uint WM_PAINT = 0x0f;
     public const uint WM_QUIT = 0x12;
     public const uint WM_RBUTTONDOWN = 0x0204;
     public const uint WM_RBUTTONUP = 0x0205;
+    public const uint WM_SIZE = 0x0005;
     public const uint WS_CHILD = 0x40000000;
     public const uint WS_OVERLAPPEDWINDOW = 0xcf0000;
     public const uint WS_VISIBLE = 0x10000000;
