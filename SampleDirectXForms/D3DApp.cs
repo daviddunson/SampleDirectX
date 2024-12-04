@@ -15,6 +15,8 @@ internal static class D3DApp
 
     public static int Run(D3DGame game)
     {
+        game.Init();
+
         var msg = new NativeMessage();
 
         while (msg.msg != WM_QUIT)

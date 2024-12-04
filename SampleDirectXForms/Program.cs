@@ -10,7 +10,6 @@ internal static class Program
     {
         var instanceHandle = Marshal.GetHINSTANCE(typeof(Program).Module);
         var game = new D3DGame(instanceHandle);
-        game.Init();
 
         D3DApp.Run(game);
     }
